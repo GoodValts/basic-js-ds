@@ -1,22 +1,16 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-// const { Node } = require('../extensions/list-tree.js');
+const { Node } = require('../extensions/list-tree.js');
 
-/**
-* Implement simple binary search tree according to task description
-* using Node from extensions
-*/
-
-class Node {
-  constructor(el){
-    this.data = el;
-    this.small = null;
-    this.big = null;
-  }
-}
+// class Node {
+//   constructor(data) {
+//     this.data = data;
+//     this.left = null;
+//     this.right = null;
+//   }
+// }
 
 class BinarySearchTree {
-
   constructor() {
     this.node = null;
   }
@@ -25,56 +19,61 @@ class BinarySearchTree {
     return this.node;
   }
 
-  add(el) {
-    function newEl(root, el){
-      if (root === null){
-        return new Node(el);
-      } else if (root.el === el){
-        return root;
-      } else if (el < root.el){
-        root.small = newEl(root.small, el);
-      } else {
-        root.big = newEl(root.big, el);
-      }
-
-      return root;
-    }  
-
-    this.node = newEl(this.node, el); 
-  }
-
-  has(el) {
-    function isEl(root, el){
-      if (root === null){
-        return false;
-      } else if (root.data === el){
-        return true;
-      } else if (el < root.data){
-        return isEl(root.small, el);
-      } else {
-        return isEl(root.big, el);
+  add(data) {
+    if(!this.node) {
+      this.node = new Node(data);
+    } else {
+      let currentNode = this.node;
+      
+      while (currentNode) {
+        if (data < currentNode.data) {
+          if(!currentNode.left) {
+            currentNode.left = new Node(data);
+            return;
+          }
+          currentNode = currentNode.left;
+        } else if (data > currentNode.data) {
+          if(!currentNode.right) {
+            currentNode.right = new Node(data);
+            return;
+          }
+          currentNode = currentNode.right;
+        }
       }
     }
-    
-    return isEl(this.node, el);
   }
 
-  find(el) {
-    function findEl(root, el){
-      if (root === null){
-        return null;
-      } else if (root.data === el){
-        return root;
-      } else if (el < root.data){
-        return findEl(root.small, el);
-      } else {
-        return findEl(root.big, el);
-      }
+  has(data) {
+    if(!this.node) return false;
+
+    let currentNode = this.node;
+    while (currentNode) {
+      if(currentNode.data === data) return true;
+      
+      currentNode.data > data
+        ? currentNode = currentNode.left
+        : currentNode = currentNode.right;
     }
-    return findEl(this.node, el);
+
+    return false;
   }
 
-  remove() {
+  find(data) {
+    if(!this.node) return null;
+
+    let currentNode = this.node;
+    while (currentNode) {
+      if(currentNode.data === data) return currentNode;
+      
+      currentNode.data > data
+        ? currentNode = currentNode.left
+        : currentNode = currentNode.right;
+    }
+
+    return null;
+  }
+
+  remove(data) {
     throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   }
@@ -93,3 +92,26 @@ class BinarySearchTree {
 module.exports = {
   BinarySearchTree
 };
+
+console.log('start\n');
+const tree = new BinarySearchTree;
+tree.add(9);
+tree.add(14);
+tree.add(54);
+tree.add(2);
+tree.add(6);
+tree.add(8);
+tree.add(31);
+tree.add(1);
+
+console.log(tree.has(7));
+
+// const fs = require('fs');
+// const path = require('path');
+
+
+// console.log(path.join(path.resolve(__dirname), 'binTree.txt'))
+// const writeStream = fs.createWriteStream(path.join(path.resolve(__dirname), 'binTree.txt'))
+
+// writeStream.write(`${JSON.stringify(tree)}`);
+// writeStream.end()
