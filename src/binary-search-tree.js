@@ -74,18 +74,84 @@ class BinarySearchTree {
   }
 
   remove(data) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    if(this.node.data === data) {
+      const leftBranch = this.node.left
+      this.node = this.node.right;
+      const currentNode = this.node.left;
+      while(currentNode.left) {
+        currentNode = currentNode.left;
+      }
+      currentNode.left = leftBranch;
+    }
+
+    let currentNode = this.node;
+    if(this.has(data)) {
+      while(currentNode) {
+        if(data > currentNode.data) {
+          if (currentNode.right.data === data) {
+            const deletedNode = currentNode.right;
+            if (deletedNode.right && deletedNode.left) {
+              let lastInBranch = deletedNode.left;
+              while(lastInBranch.right) {
+                lastInBranch = lastInBranch.right
+              }
+              lastInBranch.right = deletedNode.right;
+              currentNode.right = currentNode.right.left;
+            } else if (deletedNode.right) {
+              currentNode.right = deletedNode.right;
+            } else if (deletedNode.left) {
+              currentNode.right = deletedNode.left;
+            } else {
+              currentNode.right = null;
+            }
+            return;
+          } else {
+            currentNode = currentNode.right;
+          }
+        } else {
+          if (currentNode.left.data === data) {
+            const deletedNode = currentNode.left;
+            if(deletedNode.right && deletedNode.left) {
+              let lastInBranch = deletedNode.right;
+              while(lastInBranch.left) {
+                lastInBranch = lastInBranch.left;
+              }
+              lastInBranch.left = deletedNode.left;
+              currentNode.left = currentNode.left.right;
+            } else if (deletedNode.left) {
+              currentNode.left = deletedNode.left;
+            } else if (deletedNode.right) {
+              currentNode.left = deletedNode.right;
+            } else {
+              currentNode.left = null;
+            }
+            return;
+          } else {
+            currentNode = currentNode.left;
+          }
+        }
+      }
+    }
   }
 
   min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    if(!this.node.data) return null;
+
+    let currentNode = this.node;
+    while(currentNode.left) {
+      currentNode = currentNode.left;
+    }
+    return currentNode.data;
   }
 
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    if(!this.node.data) return null;
+
+    let currentNode = this.node;
+    while(currentNode.right) {
+      currentNode = currentNode.right;
+    }
+    return currentNode.data;
   }
 }
 
@@ -93,18 +159,22 @@ module.exports = {
   BinarySearchTree
 };
 
-console.log('start\n');
-const tree = new BinarySearchTree;
-tree.add(9);
-tree.add(14);
-tree.add(54);
-tree.add(2);
-tree.add(6);
-tree.add(8);
-tree.add(31);
-tree.add(1);
+// console.log('start\n');
+// const tree = new BinarySearchTree;
+// tree.add(9);
+// tree.add(14);
+// tree.add(2);
+// tree.add(6);
+// tree.add(128);
+// tree.add(8);
+// tree.add(31);
+// tree.add(54);
+// tree.add(1);
+// tree.remove(14);
+// tree.remove(8);
+// tree.remove(9);
 
-console.log(tree.has(7));
+// console.log(tree);
 
 // const fs = require('fs');
 // const path = require('path');

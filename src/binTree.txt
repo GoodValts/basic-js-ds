@@ -1,0 +1,1 @@
+{"node":{"data":128,"left":{"data":31,"left":{"data":2,"left":{"data":1,"left":null,"right":null},"right":{"data":6,"left":null,"right":null}},"right":{"data":54,"left":null,"right":null}},"right":null}}
