@@ -1,6 +1,6 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-// const { ListNode } = require('../extensions/list-node.js');
+const { ListNode } = require('../extensions/list-node.js');
 
 /**
  * Given a singly linked list of integers l and an integer k,
@@ -22,11 +22,53 @@ const { NotImplementedError } = require('../extensions/index.js');
  *   }
  * }
  */
-function removeKFromList(/* l, k */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function removeKFromList(l, k) {
+  let list = l;
+  if (list.value === k) {
+    list = list.next;
+  }
+
+  let currentNode = l;
+  while(currentNode.next) {
+    if(currentNode.next.value === k) {
+      currentNode.next.next ? currentNode.next = currentNode.next.next : currentNode.next = null;
+    } else {
+      currentNode = currentNode.next;
+    }
+  }
+  
+  return list;
 }
 
 module.exports = {
   removeKFromList
 };
+
+const arr = [5,2,3,6,5,8,9,4,5];
+const createList = (arr) => {
+  const list = new ListNode(arr[0]);
+  arr.shift();
+
+  let currentNode = list;
+  while(arr.length) {
+    currentNode.next = new ListNode(arr[0]);
+    currentNode = currentNode.next;
+    arr.shift();
+  }
+
+  return list;
+}
+
+const list = createList(arr);
+
+removeKFromList(list, 5);
+
+console.log(list);
+
+const fs = require('fs');
+const path = require('path');
+
+const writeStream = fs.createWriteStream(path.join(path.resolve(__dirname), 'list.txt'))
+
+writeStream.write(`${JSON.stringify(list)}`);
+writeStream.end()
